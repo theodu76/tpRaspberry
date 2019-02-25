@@ -9,10 +9,10 @@ var jsonParsed = JSON.parse(fs.readFileSync('fichier-data.json', 'utf8'));
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, World!\n');
+  res.end('Résultat du JSON\n');
+  res.end(jsonParsed);
 });
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
-  console.log(jsonParsed)
 });
