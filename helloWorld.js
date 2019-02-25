@@ -1,6 +1,25 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
+const serialport = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const portArduino = new serialport('/dev/ttyACM0', {baudRate: 9600});
+
+const parser = new Readline();
+portArduino.pipe(parser);
+
+parser.on('data', line => {
+    try{
+      if(JSON.parse(line)) {
+        fs.appendFile('texte', line+'\n', (err) => {
+        if (err) throw err;
+        });
+      }
+    }
+    catch(e){
+    }
+  });
+
 var app = express();
 
 const hostname = '127.0.0.1';
@@ -13,8 +32,12 @@ function readFile(file){
     fs.readFile(file, 'utf8', function(err, data){
       content=data.split("\n");
       for (var i in content){
-        jsonList[i] = JSON.parse(content[i]);
-        console.log(jsonList[i]);
+	try{
+	  jsonList[i] = JSON.parse(content[i]);
+          console.log(jsonList[i]);
+        }
+	catch(e){
+        }
       }
       resolve(jsonList);
     });
@@ -31,7 +54,7 @@ app.post('/', function(req, res) {
   str2 = '\n'+str;
   console.log(str);
   console.log(req.body);
-  fs.appendFile('fichier-data.json', str2, (err) => {
+  fs.appendFile('texte', str2, (err) => {
     if (err) throw err;
     console.log('Un nouvel élément a été rajouté au fichier !');
     res.status(204).end();
@@ -40,7 +63,7 @@ app.post('/', function(req, res) {
 
 
 app.get('/', function(req, res) {
-  const promise = readFile('fichier-data.json').then( (result) => {
+  const promise = readFile('texte').then( (result) => {
     res.render('affichageDonnees.ejs', {donnees : result});
     },
     (err) => {
