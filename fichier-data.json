@@ -1,1 +1,15 @@
-{"temperature" : 24.2, "humidity":28}
+{"temperature":24.1,"humidity":21}
+{"temperature":24.2,"humidity":22}
+{"temperature":24.3,"humidity":23}
+{"temperature":24.4,"humidity":24}
+{"temperature":24.5,"humidity":25}
+{"temperature":23.5,"humidity":24.5}
+{"temperature":1,"humidity":2}
+{"temperature":1,"humidity":2}
+{"temperature":23,"humidity":23}
+{"temperature":33,"humidity":33}
+{"temperature":23,"humidity":23}
+{"temperature":23,"humidity":23}
+{"temperature":23,"humidity":23}
+{"temperature":32,"humidity":21}
+{"temperature":123,"humidity":124}

@@ -1,0 +1,60 @@
+<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<h1> Voici les données renvoyées par le capteur arduino :</h1>
+
+<table id="tableau">
+    <tr>
+        <td>Itération</td>
+        <td>Température</td>
+        <td>Humidité</td>
+    </tr>
+    <% for(var i=0; i < donnees.length; i++) { %>
+       <tr>
+         <td><%=i %></td>
+         <td><%= donnees[i].temperature %></td>
+         <td><%= donnees[i].humidity %></td>
+       </tr>
+    <% } %>
+    </table>
+
+<h3> Pour actualiser le tableau :</h3>
+<input type="submit" value="Raffraichir" id = "actualiser">
+
+
+<h3> Pour générer manuellement une nouvelle donnée :</h3>
+<form method="post" id="formulaire">
+    <fieldset>
+        <label for="temperature">Température :</label>
+        <input type="text" name="temperature" id="temperature"><br>
+
+        <label for="humidity">Humidité :</label>
+        <input type="text" name="humidity" id="humidity"><br>
+        
+        <input type="submit" value="Envoyer">
+    </fieldset>
+</form>
+
+
+<script>
+    $().ready(function() {
+        $("#formulaire").submit(function(event){
+            event.preventDefault(); //On bloque l'évènement
+            //Soumission manuelle avec js
+            $.ajax({
+                url : '/',
+                type : 'POST',
+                dataType : 'json',
+                data : $('form#formulaire').serialize()
+            });
+            var temp = $('#temperature').val();
+            var humid = $('#humidity').val();
+            $('#tableau > tbody:last').append('<tr><td><%=donnees.length %></td><td>' +temp +'</td><td>'+ humid+'</td></tr> ');
+        });
+
+        $("#actualiser").submit(function(event){
+            event.preventDefault();
+        });
+    });
+</script>
